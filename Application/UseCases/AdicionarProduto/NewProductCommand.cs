@@ -8,7 +8,6 @@ public record NewProductCommand
     string Nome,
     decimal Valor,
     int QtdEstoque,
-    Guid IdCategoria,
     string NomeCategoria,
     string? NomeImagem
 ) : IRequest<Result<NewProductCommandResponse>>;

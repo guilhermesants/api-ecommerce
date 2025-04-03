@@ -1,4 +1,4 @@
-﻿using Application.Common;
+﻿using Application.Common.Behaviours;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;

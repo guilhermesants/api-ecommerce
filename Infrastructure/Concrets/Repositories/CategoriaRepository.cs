@@ -13,6 +13,6 @@ internal class CategoriaRepository : RepositoryBase<Categoria>, ICategoriaReposi
         => await Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
     
     public async Task<Categoria?> GetByNameAsync(string nome, CancellationToken cancellationToken = default)
-        =>  await Find(x => x.Nome.Equals(nome, StringComparison.OrdinalIgnoreCase)).FirstOrDefaultAsync(cancellationToken);
+        =>  await Find(x => x.Nome.ToLower() == nome.ToLower()).FirstOrDefaultAsync(cancellationToken);
     
 }
