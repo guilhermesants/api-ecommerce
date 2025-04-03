@@ -1,4 +1,6 @@
-﻿using Infrastructure.Context;
+﻿using Domain.Interfaces.Repositories;
+using Infrastructure.Concrets.Repositories;
+using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +17,7 @@ public static class DependencyInjection
             throw new InvalidOperationException("String de conexao faltando");
 
         services.AddDbContext<EcommerceContext>(opt => opt.UseNpgsql(connectionString));
-
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 }
