@@ -54,7 +54,7 @@ public class ErrorHandlerMiddleware
         {
             var result = JsonConvert.SerializeObject(new { isSuccess = false, error = exception.Message });
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError; ;
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             return context.Response.WriteAsync(result);
         }
     }
