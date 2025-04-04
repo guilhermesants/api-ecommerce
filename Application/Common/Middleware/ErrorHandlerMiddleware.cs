@@ -37,15 +37,15 @@ public class ErrorHandlerMiddleware
 
             var problemDetails = new ValidationProblemDetails
             {
-                Type = "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+                Type = "https://tools.ietf.org/html/rfc9110#section-15.5.21",
                 Title = "Uma ou mais falhas de validação ocorreram.",
-                Status = StatusCodes.Status400BadRequest,
+                Status = StatusCodes.Status422UnprocessableEntity,
                 Errors = errors,
                 Instance = Guid.NewGuid().ToString()
             };
 
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
 
             var result = JsonConvert.SerializeObject(problemDetails);
             return context.Response.WriteAsync(result);
