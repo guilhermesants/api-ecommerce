@@ -22,7 +22,6 @@ services:
       - "9003:9003"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-     # - ConnectionStrings__EcommerceDb=Host=postgres;Port=5432;Database=db_ecommerce;Username=postgres;Password=postgres;
     depends_on:
       - postgres
     networks:
