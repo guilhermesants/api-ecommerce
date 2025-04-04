@@ -15,6 +15,8 @@ public class NewProductCommandValidator : AbstractValidator<NewProductCommand>
         RuleFor(x => x.QtdEstoque)
             .GreaterThan(0).WithMessage("O quantide disponível do produto deve ser maior que zero");
 
+        RuleFor(x => x.NomeCategoria)
+            .NotEmpty().WithMessage("O nome da categoria é obrigatório");
     }
 }
 

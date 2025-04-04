@@ -31,6 +31,10 @@ public class Result<TResponse>
 
     public static Result<TResponse> Success(TResponse data) => new(data, true, string.Empty);
     public static Result<TResponse> Failure(string errorMessage) => new(default!, false, errorMessage);
+    public static Result<TResponse> SuccessWithStatusCode(HttpStatusCode httpStatusCode)
+        => new(default!, true, string.Empty, httpStatusCode);
+    public static Result<TResponse> SuccessWithStatusCode(TResponse data, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+        => new(data, true, string.Empty, httpStatusCode);
     public static Result<TResponse> FailureWithStatusCode(string errorMessage, HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest) =>
        new(default!, false, errorMessage, httpStatusCode);
 }

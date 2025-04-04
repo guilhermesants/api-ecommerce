@@ -1,5 +1,6 @@
 ﻿using Application.Common.Responses;
 using Application.UseCases.AdicionarProduto;
+using Application.UseCases.RemoverProduto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -17,7 +18,7 @@ public class ProdutoController : ControllerBase
     [HttpPost]
     [EndpointSummary("Novo Produto")]
     [EndpointDescription("Responsável por cadastrar um novo produto e a categoria caso não exista")]
-    [ProducesResponseType(typeof(Result<NewProductCommandResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Result<NewProductCommandResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> CadastrarProduto([FromBody] NewProductCommand command, CancellationToken cancellationToken = default)
@@ -27,6 +28,22 @@ public class ProdutoController : ControllerBase
         if (!result.IsSuccess)
             return StatusCode(result.HttpStatusCode == 0 ? (int)HttpStatusCode.InternalServerError : (int)result.HttpStatusCode, result.ErrorMessage);
 
-        return Ok(result);
+        return Created(string.Empty, result);
+    }
+
+    [HttpDelete("{id}")]
+    [EndpointSummary("Deletar Produto")]
+    [EndpointDescription("Responsável por remover um produto pelo id")]
+    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> DeletarProduto([FromRoute] Guid id, CancellationToken cancellationToken = default)
+    {
+        var result = await _sender.Send(new RemoveProductCommand(id), cancellationToken);
+
+        if (!result.IsSuccess)
+            return StatusCode(result.HttpStatusCode == 0 ? (int)HttpStatusCode.InternalServerError : (int)result.HttpStatusCode, result.ErrorMessage);
+
+        return StatusCode((int)result.HttpStatusCode);
     }
 }

@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using MediatR;
+using System.Net;
 
 namespace Application.UseCases.AdicionarProduto;
 
@@ -30,8 +31,9 @@ public class NewProducCommandHandler : IRequestHandler<NewProductCommand, Result
         _uow.ProdutoRepository.Add(novoProduto);
         await _uow.CommitAsync(cancellationToken);
 
-        return Result<NewProductCommandResponse>.Success(
-            new NewProductCommandResponse(novoProduto.Id)
-            );
+        return Result<NewProductCommandResponse>.SuccessWithStatusCode(
+            new NewProductCommandResponse(novoProduto.Id),
+            HttpStatusCode.Created
+        );
     }
 }
