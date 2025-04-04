@@ -6,7 +6,7 @@ public class Produto
     public string Nome { get; set; } = string.Empty;
     public decimal Valor { get; set; }
     public int QtdEstoque { get; set; }
-    public string NomeImagem { get; set; } = string.Empty;
+    public string? UrlImagem { get; set; }
     public DateTime DataCadastro { get; set; }
     public DateTime? DataAlteracao { get; set; }
     public Guid IdCategoria { get; set; }

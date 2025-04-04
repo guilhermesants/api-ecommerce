@@ -9,7 +9,7 @@ public record NewProductCommand
     decimal Valor,
     int QtdEstoque,
     string NomeCategoria,
-    string? NomeImagem
+    string? UrlImagem
 ) : IRequest<Result<NewProductCommandResponse>>;
 
 public record NewProductCommandResponse(Guid Id);

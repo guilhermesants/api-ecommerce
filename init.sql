@@ -14,7 +14,7 @@ CREATE TABLE produtos (
     nome VARCHAR(255) NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
     qtd_estoque INT NOT NULL,
-    nome_imagem VARCHAR(255) NOT NULL,
+    url_imagem VARCHAR(255) NULL,
     data_cadastro TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_alteracao TIMESTAMP NULL,
     id_categoria UUID NOT NULL,

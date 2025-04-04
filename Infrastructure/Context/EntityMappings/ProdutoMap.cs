@@ -30,9 +30,9 @@ public class ProdutoMap : IEntityTypeConfiguration<Produto>
                .IsRequired()
                .HasColumnName("qtd_estoque");
 
-        builder.Property(x => x.NomeImagem)
+        builder.Property(x => x.UrlImagem)
                .IsRequired()
-               .HasColumnName("nome_imagem")
+               .HasColumnName("url_imagem")
                .HasMaxLength(255);
 
         builder.Property(x => x.DataCadastro)
