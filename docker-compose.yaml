@@ -12,6 +12,22 @@ services:
     networks:
       - ecommerce_network
 
+  api:
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile
+    container_name: ecommerce_api
+    restart: always
+    ports:
+      - "9003:9003"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+     # - ConnectionStrings__EcommerceDb=Host=postgres;Port=5432;Database=db_ecommerce;Username=postgres;Password=postgres;
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce_network
+
 volumes:
   pg_data:
 

@@ -4,6 +4,10 @@ using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var host = builder.Configuration["ApiHost"];
+
+builder.WebHost.UseUrls(host);
+
 // Add services to the container.
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
