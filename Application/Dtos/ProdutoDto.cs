@@ -6,6 +6,6 @@ public record ProdutoDto
     decimal Valor,
     int QtdEstoque,
     string NomeCategoria,
-    string? UrlImagem,
-    bool? Ativo
+    string? UrlImagem = null,
+    bool? Ativo = null
 );
