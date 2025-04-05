@@ -4,6 +4,7 @@ using Application.UseCases.AdicionarProduto;
 using Application.UseCases.EditarProduto;
 using Application.UseCases.ObterProdutos;
 using Application.UseCases.RemoverProduto;
+using Application.UseCases.UploadImagemProduto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -65,6 +66,18 @@ public class ProdutoController : ControllerBase
     public async Task<IActionResult> ObterProdutos([FromQuery] GetProductsQuery getProductsQuery, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(getProductsQuery, cancellationToken);
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpPatch("{id}/imagem")]
+    [EndpointSummary("Upload de imagem do produto")]
+    [EndpointDescription("Responsável por fazer upload da imagem para o MinIo")]
+    [ProducesResponseType(typeof(Result<IEnumerable<ProdutoDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> CarregarImagemProduto([FromRoute] Guid id, IFormFile imagem, CancellationToken cancellationToken = default)
+    {
+        var result = await _sender.Send(new UploadImageProductCommand(id, imagem), cancellationToken);
         return StatusCode((int)result.HttpStatusCode, result);
     }
 }
