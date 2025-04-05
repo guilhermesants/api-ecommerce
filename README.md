@@ -45,3 +45,17 @@ Implementa os repositórios definidos na camada `Domain`, lida com o acesso a ba
 ### 🎯 Presentation
 Responsável pela camada de API (Controllers): endpoints públicos expostos para consumo externo.
 
+A imagem abaixo representa essa estrutura em camadas (obs: imagem capturada da internet)
+<img src="docs/clean-architecture.png" alt="Arquitetura do Projeto" width="400"/>
+
+## 💡 Tecnologias Utilizadas
+• ASP.NET Core 8  
+• PostgreSQL  
+• Entity Framework Core  
+• Docker  
+• MediatR  
+• FluentValidation  
+• Swagger / Swashbuckle  
+• XUnit e Moq  
+• MinIO (S3-compatible storage)  
+• CI/CD (Github Actions)
