@@ -1,6 +1,9 @@
-﻿using FluentValidation;
+﻿using Application.Common.Exceptions;
+using Application.Common.Responses;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace Application.Common.Behaviours;
 
@@ -41,7 +44,25 @@ public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
         catch (Exception ex)
         {
             _logger.LogError(ex, "Erro no handler {HandlerName}", request.GetType().Name);
-            return (TResponse)Activator.CreateInstance(typeof(TResponse), false, "Ocorreu um erro no processamento da solicitação.")!;
+            
+            if (typeof(TResponse).IsGenericType && typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
+            {
+                var innerType = typeof(TResponse).GetGenericArguments()[0];
+
+                var failureMethod = typeof(Result<>)
+                    .MakeGenericType(innerType)
+                    .GetMethod(nameof(Result<object>.FailureWithStatusCode), new[] { typeof(string), typeof(HttpStatusCode) });
+
+                var result = failureMethod!.Invoke(null, new object[]
+                {
+                    "Ocorreu um erro no processamento da solicitação.",
+                    HttpStatusCode.InternalServerError
+                });
+
+                return (TResponse)result!;
+            }
+
+            throw new HandlerExecutionException(request.GetType().Name, ex);
         }
     }
 }

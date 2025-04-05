@@ -31,7 +31,6 @@ public class ProdutoMap : IEntityTypeConfiguration<Produto>
                .HasColumnName("qtd_estoque");
 
         builder.Property(x => x.UrlImagem)
-               .IsRequired()
                .HasColumnName("url_imagem")
                .HasMaxLength(255);
 

@@ -1,5 +1,7 @@
 ﻿using Application.Common.Responses;
+using Application.Dtos;
 using Application.UseCases.AdicionarProduto;
+using Application.UseCases.EditarProduto;
 using Application.UseCases.RemoverProduto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +40,19 @@ public class ProdutoController : ControllerBase
     public async Task<IActionResult> DeletarProduto([FromRoute] Guid id, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new RemoveProductCommand(id), cancellationToken);
-        return StatusCode((int)result.HttpStatusCode);
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpPut("{id}")]
+    [EndpointSummary("Editar Produto")]
+    [EndpointDescription("Responsável por editar um produto")]
+    [ProducesResponseType(typeof(Result<Unit>), StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status422UnprocessableEntity)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> EditarProduto([FromRoute] Guid id, [FromBody] ProdutoDto produtoDto, CancellationToken cancellationToken = default)
+    {
+        var result = await _sender.Send(new EdictProductCommand(id, produtoDto), cancellationToken);
+        return StatusCode((int)result.HttpStatusCode, result);
     }
 }

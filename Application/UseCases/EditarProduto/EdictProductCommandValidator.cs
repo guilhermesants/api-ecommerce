@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Application.UseCases.AdicionarProduto;
+namespace Application.UseCases.EditarProduto;
 
-public class NewProductCommandValidator : AbstractValidator<NewProductCommand>
+public class EdictProductCommandValidator : AbstractValidator<EdictProductCommand>
 {
-    public NewProductCommandValidator()
+    public EdictProductCommandValidator()
     {
         RuleFor(x => x.ProdutoDto.Nome)
             .NotEmpty().WithMessage("O nome do produto é obrigatório");
@@ -19,4 +19,3 @@ public class NewProductCommandValidator : AbstractValidator<NewProductCommand>
             .NotEmpty().WithMessage("O nome da categoria é obrigatório");
     }
 }
-
