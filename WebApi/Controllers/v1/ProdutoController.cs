@@ -2,10 +2,10 @@
 using Application.Dtos;
 using Application.UseCases.AdicionarProduto;
 using Application.UseCases.EditarProduto;
+using Application.UseCases.ObterProdutos;
 using Application.UseCases.RemoverProduto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace WebApi.Controllers.v1;
 
@@ -53,6 +53,18 @@ public class ProdutoController : ControllerBase
     public async Task<IActionResult> EditarProduto([FromRoute] Guid id, [FromBody] ProdutoDto produtoDto, CancellationToken cancellationToken = default)
     {
         var result = await _sender.Send(new EdictProductCommand(id, produtoDto), cancellationToken);
+        return StatusCode((int)result.HttpStatusCode, result);
+    }
+
+    [HttpGet]
+    [EndpointSummary("Obter lista de produtos")]
+    [EndpointDescription("Responsável por trazer uma lista com produtos e suas categorias")]
+    [ProducesResponseType(typeof(Result<IEnumerable<ProdutoDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> ObterProdutos([FromQuery] GetProductsQuery getProductsQuery, CancellationToken cancellationToken = default)
+    {
+        var result = await _sender.Send(getProductsQuery, cancellationToken);
         return StatusCode((int)result.HttpStatusCode, result);
     }
 }
