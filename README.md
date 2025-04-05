@@ -20,7 +20,7 @@ Você pode executar o projeto de duas maneiras: via **Docker Compose** ou direta
       docker compose up -d
 3. É necessario alterar: "BaseUrl": "http://minio:9000" para "BaseUrl": "http://localhost:9000"
 4. É necessario alterar também: "EcommerceDb": "Host=postgres;Port=5432;Database=db_ecommerce;Username=postgres"
-   para "EcommerceDb": "Host=127.0.0.1;Port=5432;Database=db_ecommerce;Username=postgres"
+   para "EcommerceDb": "Host=localhost;Port=5432;Database=db_ecommerce;Username=postgres"
 5. O docker-compose iniciara os seguintes servicos: Banco de dados PostgresSQL e MinIO
 
 ## 🛢 Estrutura do banco de dados
