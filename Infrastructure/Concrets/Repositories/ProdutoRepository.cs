@@ -2,7 +2,6 @@
 using Domain.Interfaces.Repositories;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Infrastructure.Concrets.Repositories;
 
@@ -12,7 +11,9 @@ public class ProdutoRepository : RepositoryBase<Produto>, IProdutoRepository
     { }
 
     public async Task<Produto?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        => await Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
+        => await Find(x => x.Id == id)
+                .Include(c => c.Categoria)
+                .FirstOrDefaultAsync(cancellationToken);
 
     public async Task<(IEnumerable<Produto> produtos, int totalItens)> ObterProdutosPorFiltroAsync(string? categoria, 
                                                                                                     decimal? precoMinimo, 
