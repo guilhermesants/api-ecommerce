@@ -6,11 +6,9 @@ using System.Net;
 
 namespace Application.UseCases.AdicionarProduto;
 
-public class NewProducCommandHandler : IRequestHandler<NewProductCommand, Result<NewProductCommandResponse>>
+public class NewProducCommandHandler : HandlerBase, IRequestHandler<NewProductCommand, Result<NewProductCommandResponse>>
 {
-    private readonly IUnitOfWork _uow;
-
-    public NewProducCommandHandler(IUnitOfWork uow) => _uow = uow;
+    public NewProducCommandHandler(IUnitOfWork uow) : base(uow) { }
 
     public async Task<Result<NewProductCommandResponse>> Handle(NewProductCommand request, CancellationToken cancellationToken)
     {

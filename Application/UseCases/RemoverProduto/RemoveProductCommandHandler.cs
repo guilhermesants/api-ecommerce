@@ -5,11 +5,9 @@ using System.Net;
 
 namespace Application.UseCases.RemoverProduto;
 
-public class RemoveProductCommandHandler : IRequestHandler<RemoveProductCommand, Result<Unit>>
+public class RemoveProductCommandHandler : HandlerBase, IRequestHandler<RemoveProductCommand, Result<Unit>>
 {
-    private readonly IUnitOfWork _uow;
-
-    public RemoveProductCommandHandler(IUnitOfWork uow) => _uow = uow;
+    public RemoveProductCommandHandler(IUnitOfWork uow) : base(uow) { }
 
     public async Task<Result<Unit>> Handle(RemoveProductCommand request, CancellationToken cancellationToken)
     {
