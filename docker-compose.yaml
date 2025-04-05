@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    networks:
+      - ecommerce_network
+
+  api:
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile
+    container_name: ecommerce_api
+    restart: always
+    ports:
+      - "9003:9003"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - postgres
+    networks:
+      - ecommerce_network
+
+volumes:
+  pg_data:
+
+networks:
+  ecommerce_network:
