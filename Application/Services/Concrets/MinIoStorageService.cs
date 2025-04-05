@@ -20,7 +20,7 @@ internal class MinIoStorageService : IStorageService
     public async Task<string> UploadFileAsync(IFormFile file, string fileName, CancellationToken cancellationToken)
     {
         using var newMemoryStream = new MemoryStream();
-        await file.CopyToAsync(newMemoryStream);
+        await file.CopyToAsync(newMemoryStream, cancellationToken);
 
         var uploadRequest = new TransferUtilityUploadRequest
         {
@@ -32,7 +32,7 @@ internal class MinIoStorageService : IStorageService
         };
 
         var transferUtility = new TransferUtility(_s3Client);
-        await transferUtility.UploadAsync(uploadRequest);
+        await transferUtility.UploadAsync(uploadRequest, cancellationToken);
 
         return $"http://localhost:9000/{_bucket}/{fileName}";
     }
