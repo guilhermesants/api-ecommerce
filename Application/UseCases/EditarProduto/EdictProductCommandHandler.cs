@@ -6,11 +6,9 @@ using System.Net;
 
 namespace Application.UseCases.EditarProduto;
 
-public class EdictProductCommandHandler : IRequestHandler<EdictProductCommand, Result<Unit>>
+public class EdictProductCommandHandler : HandlerBase, IRequestHandler<EdictProductCommand, Result<Unit>>
 {
-    private readonly IUnitOfWork _uow;
-
-    public EdictProductCommandHandler(IUnitOfWork uow) => _uow = uow;
+    public EdictProductCommandHandler(IUnitOfWork uow) : base(uow) { }
 
     public async Task<Result<Unit>> Handle(EdictProductCommand request, CancellationToken cancellationToken)
     {

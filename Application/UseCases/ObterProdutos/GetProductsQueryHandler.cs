@@ -6,11 +6,9 @@ using System.Net;
 
 namespace Application.UseCases.ObterProdutos;
 
-public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, Result<IEnumerable<ProdutoDto>>>
+public class GetProductsQueryHandler : HandlerBase, IRequestHandler<GetProductsQuery, Result<IEnumerable<ProdutoDto>>>
 {
-    private readonly IUnitOfWork _uow;
-
-    public GetProductsQueryHandler(IUnitOfWork uow) => _uow = uow;
+    public GetProductsQueryHandler(IUnitOfWork uow) : base(uow) { }
 
     public async Task<Result<IEnumerable<ProdutoDto>>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {

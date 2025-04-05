@@ -6,18 +6,16 @@ using System.Net;
 
 namespace Application.UseCases.UploadImagemProduto;
 
-public class UploadImageProductCommandHandler : IRequestHandler<UploadImageProductCommand, Result<string>>
+public class UploadImageProductCommandHandler :HandlerBase, IRequestHandler<UploadImageProductCommand, Result<string>>
 {
-    private readonly IUnitOfWork _uow;
     private readonly IStorageService _storageService;
 
-    public UploadImageProductCommandHandler(IUnitOfWork uow, IStorageService storageService)
+    public UploadImageProductCommandHandler(IUnitOfWork uow, IStorageService storageService) : base(uow)
     {
-        _uow = uow;
         _storageService = storageService;
     }
 
-    public async Task<Result<string>> Handle(UploadImageProductCommand request, CancellationToken cancellationToken)
+public async Task<Result<string>> Handle(UploadImageProductCommand request, CancellationToken cancellationToken)
     {
         var produto = await _uow.ProdutoRepository.GetByIdAsync(request.Id, cancellationToken);
 
