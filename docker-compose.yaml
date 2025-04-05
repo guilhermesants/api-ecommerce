@@ -27,6 +27,20 @@ services:
     networks:
       - ecommerce_network
 
+  minio-init:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5;
+        mc alias set local http://minio:9000 minioadmin minioadmin;
+        mc mb local/produtos || true;
+        mc anonymous set download local/produtos;
+      "
+    networks:
+      - ecommerce_network
+
   api:
     build:
       context: .
@@ -39,6 +53,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       - postgres
+      - minio
     networks:
       - ecommerce_network
 
