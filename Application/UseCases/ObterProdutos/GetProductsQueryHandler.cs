@@ -6,22 +6,27 @@ using System.Net;
 
 namespace Application.UseCases.ObterProdutos;
 
-public class GetProductsQueryHandler : HandlerBase, IRequestHandler<GetProductsQuery, Result<IEnumerable<ProdutoDto>>>
+public class GetProductsQueryHandler : HandlerBase, IRequestHandler<GetProductsQuery, Result<GetProductsQueryResponse>>
 {
     public GetProductsQueryHandler(IUnitOfWork uow) : base(uow) { }
 
-    public async Task<Result<IEnumerable<ProdutoDto>>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<GetProductsQueryResponse>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
-        var produtos = await _uow.ProdutoRepository.ObterProdutosPorFiltroAsync(
+        var pagina = request.Pagina ?? 1;
+        var qtdPagina = request.QtdPagina ?? 10;
+
+        var (produtos, totalItens) = await _uow.ProdutoRepository.ObterProdutosPorFiltroAsync(
             request.Categoria,
             request.PrecoMinimo,
             request.PrecoMaximo,
             request.Ativo,
+            pagina,
+            qtdPagina,
             cancellationToken
         );
 
         if (!produtos.Any())
-            return Result<IEnumerable<ProdutoDto>>.FailureWithStatusCode("Produtos não encontrados", HttpStatusCode.NotFound);
+            return Result<GetProductsQueryResponse>.FailureWithStatusCode("Produtos não encontrados", HttpStatusCode.NotFound);
 
         var produtosDto = produtos.Select(p => new ProdutoDto
         (
@@ -33,6 +38,12 @@ public class GetProductsQueryHandler : HandlerBase, IRequestHandler<GetProductsQ
             p.Ativo
         )).ToList();
 
-        return Result<IEnumerable<ProdutoDto>>.SuccessWithStatusCode(produtosDto, HttpStatusCode.OK);
+        return Result<GetProductsQueryResponse>.SuccessWithStatusCode(
+            new GetProductsQueryResponse(
+                 produtosDto,
+                 pagina,
+                 qtdPagina,
+                 totalItens
+            ), HttpStatusCode.OK);
     }
 }

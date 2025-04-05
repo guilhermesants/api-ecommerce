@@ -8,5 +8,14 @@ public record GetProductsQuery(
     string? Categoria,
     decimal? PrecoMinimo,
     decimal? PrecoMaximo,
-    bool? Ativo
-) : IRequest<Result<IEnumerable<ProdutoDto>>>;
+    bool? Ativo,
+    int? Pagina,
+    int? QtdPagina
+) : IRequest<Result<GetProductsQueryResponse>>;
+
+public record GetProductsQueryResponse(
+    IEnumerable<ProdutoDto> ListProducts,
+    int Pagina,
+    int QtdPagina,
+    int TotalItens
+);
